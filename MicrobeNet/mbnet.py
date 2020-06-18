@@ -50,10 +50,10 @@ def main():
     if args['dst'] == None:
         print('No destination directory mentioned: example /path/to/destination/*.tif')
     else:
-        dst_folder = args['dst']
-        tmp = dst_folder.split('*')
-        save_format = tmp[1]
-        dst_folder = tmp[0]
+        dst_folder = os.path.normpath(args['dst'])
+        # tmp = dst_folder.split('*')
+        # save_format = tmp[1]
+        # dst_folder = tmp[0]
     
     ## load model
     print('loading model ... ')
@@ -69,5 +69,5 @@ def main():
         im = pre_processing(im,mean_width)
         im = mbnet.segment(im,invert)
         im = post_processing(im)
-        imsave(dst_folder + os.path.basename(f)[:-4] + '_mbnet' + save_format,im.astype(np.uint8))
+        imsave(dst_folder + os.path.basename(f)[:-4] + '_mbnet.tif',im.astype(np.uint8))
     
