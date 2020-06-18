@@ -6,8 +6,8 @@ import os
 from tqdm import tqdm
 from skimage.io import imread,imsave
 
-from mbnet.utils import *
-from mbnet.microbeNet import *
+from MicrobeNet.utils import *
+from MicrobeNet.microbeNet import *
 
 import warnings
 
@@ -69,5 +69,5 @@ def main():
         im = pre_processing(im,mean_width)
         im = mbnet.segment(im,invert)
         im = post_processing(im)
-        imsave(dst_folder + os.path.basename(f)[:-4] + '_processed' + save_format,im.astype(np.uint8))
+        imsave(dst_folder + os.path.basename(f)[:-4] + '_mbnet' + save_format,im.astype(np.uint8))
     
