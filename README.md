@@ -1,5 +1,6 @@
 # MicrobeNet
 ### Agnostic segmentation of rod-shaped bacteria
+Description - pending
 
 ## Installation
 Requires version python version 3.6
