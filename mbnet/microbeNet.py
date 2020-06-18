@@ -8,7 +8,7 @@ from skimage.io import imread,imsave
 from skimage.filters import gaussian, laplace, threshold_otsu, median
 from skimage.feature import shape_index
 from skimage.feature import hessian_matrix, hessian_matrix_eigvals
-from mbnet.utils import *
+from MicrobeNet.utils import *
 
 
 def predict_small_images(im):
