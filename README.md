@@ -2,6 +2,8 @@
 ### Agnostic segmentation of rod-shaped bacteria
 
 ## Installation
+Requires version python version 3.6
+
 pip install git+https://github.com/pswapnesh/MicrobeNet.git
 
 or 
