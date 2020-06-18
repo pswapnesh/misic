@@ -20,7 +20,7 @@ setuptools.setup(
    'tqdm'
     ],
     entry_points = {
-        'console_scripts': ['mbnet=mbnet.mbnet:main'],
+        'console_scripts': ['mbnet=MicrobeNet.mbnet:main'],
     },
     classifiers=[
         "Programming Language :: Python :: 3",
