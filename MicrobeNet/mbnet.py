@@ -50,7 +50,7 @@ def main():
     if args['dst'] == None:
         print('No destination directory mentioned: example /path/to/destination/*.tif')
     else:
-        dst_folder = os.path.normpath(args['dst']) + '\\'
+        dst_folder = os.path.normpath(args['dst']) + os.path.sep
         # tmp = dst_folder.split('*')
         # save_format = tmp[1]
         # dst_folder = tmp[0]
