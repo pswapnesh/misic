@@ -6,8 +6,8 @@ import os
 from tqdm import tqdm
 from skimage.io import imread,imsave
 
-from mbnet.utils import *
-from mbnet.microbeNet import *
+from MicrobeNet.utils import *
+from MicrobeNet.microbeNet import *
 
 import warnings
 
