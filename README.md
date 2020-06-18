@@ -4,6 +4,10 @@
 ## Installation
 pip install git+https://github.com/pswapnesh/MicrobeNet.git
 
+or 
+
+pip install https://github.com/pswapnesh/MicrobeNet/archive/master.zip
+
 
 ## Usage
 ### command line
