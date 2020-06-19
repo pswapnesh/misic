@@ -45,7 +45,7 @@ def pre_processing(im,mean_width = 10):
 
 def post_processing(y):
     y = y[:,:,0] - y[:,:,1]
-    y = 255.0*(y>0.95)
+    #y = 255.0*(y>0.95)
     return y    
 
 

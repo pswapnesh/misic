@@ -63,11 +63,15 @@ def main():
     ## batch processing    
     flist = glob.glob(src_folder)
     for f in tqdm(flist):
-        im = imread(f)
+        im = imread(f)        
         if len(im.shape)>2:
             im = im[:,:,0]
+        sr,sz = im.shape
+        scale = round(10.0/mean_width, 2)
         im = pre_processing(im,mean_width)
         im = mbnet.segment(im,invert)
         im = post_processing(im)
+        im = resize(im,(sr,sc))
+        im = (im>0.98)*255.0
         imsave(dst_folder + os.path.basename(f)[:-4] + '_mbnet.tif',im.astype(np.uint8))
     
