@@ -19,7 +19,11 @@ mbnet --light_background True --mean_width 8 --src '/path/to/source/folder/\*.ti
 mbnet -lb True -mw 8 -s /path/to/source/folder/*.tif -d /path/to/destination/folder/
 
 ### use package
-from mbnet.microbeNet import *
+from MicrobeNet.microbeNet import *
+
+mbnet = Microbenet()
+
+im = imread(filename)
 
 im = pre_processing(im,mean_width = 10)
 
