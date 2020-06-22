@@ -27,6 +27,6 @@ im = imread(filename)
 
 im = pre_processing(im,mean_width = 10)
 
-y = mbnet.segment(im,invert)
+y = mbnet.segment(im,invert = True) # invert = True for light backgraound images like Phase contrast
 
 y = post_processing(y)
