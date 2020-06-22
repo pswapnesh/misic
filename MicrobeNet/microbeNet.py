@@ -40,7 +40,7 @@ def add_noise(im,sensitivity = 0.8):
 def pre_processing(im,mean_width = 10):
     scale = round(10.0/mean_width, 2)
     im = rescale(im,scale)
-    im = add_noise(im)
+    #im = add_noise(im)
     return im
 
 def post_processing(y):
@@ -54,7 +54,8 @@ class Microbenet():
         self.size = 256
         model_path = get_file(
             'microbenet_model',
-            'https://mycore.core-cloud.net/index.php/s/xwepbpNX1JH8hqL/download')        
+            #'https://mycore.core-cloud.net/index.php/s/xwepbpNX1JH8hqL/download')        
+            'https://mycore.core-cloud.net/index.php/s/scMq6NtCw6ZcGUa/download') ## 0622
         self.model = load_model(model_path,compile=False)
         self.model.compile(optimizer='adam',
               loss='categorical_crossentropy',
