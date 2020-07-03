@@ -87,3 +87,46 @@ def stitch_tiles(patches,params):
     if pad_c>0:
         result = result[:,:-pad_c]
     return result
+
+
+def jaccard_coef(y_true, y_pred):
+    smooth = 0.001
+    #y_pred = K.cast(K.greater(y_pred, .8), dtype='float32') # .5 is the threshold
+    #y_true = K.cast(K.greater(y_true, .9), dtype='float32') # .5 is the threshold
+    intersection = np.mean(y_true * y_pred)
+    sum_ = np.mean(y_true + y_pred)
+
+    jac = (intersection + smooth) / (sum_ - intersection + smooth)
+
+    return jac
+
+def get_rand_patch(im,sz):
+    sr,sc = im.shape
+    rr = np.random.randint(sr-sz)
+    cc = np.random.randint(sc-sz)
+    return im[rr:rr+sz,cc:cc+sz]
+
+def find_best_parameter(im,mbnet,scale=1,invert = True):
+    sr,sc = im.shape
+    N = 5
+    if scale != 1:
+        im = rescale(im,s)
+        
+    variances = np.arange(0.0001,0.01,0.0005)
+    imgs = []
+    for v in variances:    
+        r1 = random_noise(im,mode = 'gaussian',var = v,seed = 42)
+        r1 = normalize2max(r1)
+        if invert:
+            r1 = 1.0-r1
+        random_patches = np.array([mbnet.shapenet_preprocess(get_rand_patch(r1,256)) for ii in range(N)])            
+        y1 = mbnet.model.predict(random_patches)        
+        imgs.append(y1)
+    
+    imgs = np.array(imgs)
+
+    ym = np.mean(1.0*(imgs>0.98),axis = 0)
+    J = np.array([jaccard_coef(i,ym) for i in imgs])
+    idx = np.where(J == np.max(J))[0][0]    
+    return variances[idx],[variances,J]
+        

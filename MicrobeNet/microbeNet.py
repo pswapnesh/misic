@@ -39,13 +39,14 @@ def add_noise(im,sensitivity = 0.8):
 
 def pre_processing(im,mean_width = 10):
     scale = round(10.0/mean_width, 2)
-    im = rescale(im,scale)
+    if mean_width !=10:
+        im = rescale(im,scale)
     #im = add_noise(im)
     return im
 
-def post_processing(y):
+def post_processing(y,mean_width = 10):
     y = y[:,:,0] - y[:,:,1]
-    #y = 255.0*(y>0.95)
+    #y = 255.0*(y>0.95)    
     return y    
 
 
