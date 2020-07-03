@@ -112,10 +112,13 @@ def find_best_parameter(im,mbnet,scale=1,invert = True):
     if scale != 1:
         im = rescale(im,s)
         
-    variances = np.arange(0.0001,0.01,0.0005)
+    variances = np.arange(0.0,0.01,0.0005)
     imgs = []
     for v in variances:    
-        r1 = random_noise(im,mode = 'gaussian',var = v,seed = 42)
+        if v ==0:
+            r1 = im*1.0
+        else:
+            r1 = random_noise(im,mode = 'gaussian',var = v,seed = 42)
         r1 = normalize2max(r1)
         if invert:
             r1 = 1.0-r1
