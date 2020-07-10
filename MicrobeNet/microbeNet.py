@@ -56,7 +56,8 @@ class Microbenet():
         model_path = get_file(
             'microbenet_model',
             #'https://mycore.core-cloud.net/index.php/s/xwepbpNX1JH8hqL/download')        
-            'https://mycore.core-cloud.net/index.php/s/scMq6NtCw6ZcGUa/download') ## 0622
+            #'https://mycore.core-cloud.net/index.php/s/scMq6NtCw6ZcGUa/download') ## 0622
+            'https://mycore.core-cloud.net/index.php/s/arkTXiaNSoVgr6y/download') ## 10-07-2020
         self.model = load_model(model_path,compile=False)
         self.model.compile(optimizer='adam',
               loss='categorical_crossentropy',
