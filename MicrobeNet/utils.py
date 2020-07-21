@@ -133,3 +133,25 @@ def find_best_parameter(im,mbnet,scale=1,invert = True):
     idx = np.where(J == np.max(J))[0][0]    
     return variances[idx],[variances,J]
         
+def predict_small_images(im):
+    sr,sc = im.shape
+    sz = 256
+    r = int(np.ceil(sz/sr))
+    im = np.tile(im,(r,r))
+    if im.shape[0]>sz:
+        y = shnet.segment(im)  
+        return y[:sr,:sc,:]
+    else:
+        x = shnet.shapenet_preprocess(im)
+        y = shnet.unet.model.predict(x[np.newaxis,:])    
+    return y[0,:sr,:sc,:]
+        
+
+def add_noise(im,sensitivity = 0.8):
+    if sensitivity ==0:
+        sensitivity = 0.1
+    im = normalize2max(im)
+    lvar = gaussian((im-gaussian(im,2))**2,2)
+    lvar = (1.0-sensitivity)*lvar
+    lvar[lvar<0.0001] = 0.0001
+    return random_noise(im,mode = 'localvar',local_vars = lvar,clip=True,seed = 42)

@@ -11,28 +11,7 @@ from skimage.feature import hessian_matrix, hessian_matrix_eigvals
 from MicrobeNet.utils import *
 
 
-def predict_small_images(im):
-    sr,sc = im.shape
-    sz = 256
-    r = int(np.ceil(sz/sr))
-    im = np.tile(im,(r,r))
-    if im.shape[0]>sz:
-        y = shnet.segment(im)  
-        return y[:sr,:sc,:]
-    else:
-        x = shnet.shapenet_preprocess(im)
-        y = shnet.unet.model.predict(x[np.newaxis,:])    
-    return y[0,:sr,:sc,:]
-        
 
-def add_noise(im,sensitivity = 0.8):
-    if sensitivity ==0:
-        sensitivity = 0.1
-    im = normalize2max(im)
-    lvar = gaussian((im-gaussian(im,2))**2,2)
-    lvar = (1.0-sensitivity)*lvar
-    lvar[lvar<0.0001] = 0.0001
-    return random_noise(im,mode = 'localvar',local_vars = lvar,clip=True,seed = 42)
 
 
 
@@ -44,10 +23,11 @@ def pre_processing(im,mean_width = 10):
     #im = add_noise(im)
     return im
 
-def post_processing(y,mean_width = 10):
-    y = y[:,:,0] - y[:,:,1]
-    #y = 255.0*(y>0.95)    
-    return y    
+def post_processing(y):
+    yy = y[:,:,0] >0.95
+    yy = y[:,:,0]-gaussian(y[:,:,1],0.5)
+    yy = binary_opening(yy > 0.5)
+    return yy  
 
 
 class Microbenet():
@@ -57,7 +37,7 @@ class Microbenet():
             'microbenet_model',
             #'https://mycore.core-cloud.net/index.php/s/xwepbpNX1JH8hqL/download')        
             #'https://mycore.core-cloud.net/index.php/s/scMq6NtCw6ZcGUa/download') ## 0622
-            'https://mycore.core-cloud.net/index.php/s/arkTXiaNSoVgr6y/download') ## 10-07-2020
+            'https://mycore.core-cloud.net/index.php/s/8sfeRJi4oFdMgZ5/download') ## 0721
         self.model = load_model(model_path,compile=False)
         self.model.compile(optimizer='adam',
               loss='categorical_crossentropy',
