@@ -110,7 +110,7 @@ def find_best_parameter(im,mbnet,scale=1,invert = True):
     sr,sc = im.shape
     N = 5
     if scale != 1:
-        im = rescale(im,s)
+        im = rescale(im,scale)
         
     variances = np.arange(0.0,0.01,0.0005)
     imgs = []
