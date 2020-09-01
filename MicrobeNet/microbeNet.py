@@ -16,12 +16,18 @@ from MicrobeNet.utils import *
 
 
 
-def pre_processing(im,mean_width = 10):
-    scale = round(10.0/mean_width, 2)
-    if mean_width !=10:
-        im = rescale(im,scale)
-    #im = add_noise(im)
-    return im
+# def pre_processing(im,mean_width = 10):
+#     scale = round(10.0/mean_width, 2)
+#     if mean_width !=10:
+#         im = rescale(im,scale)
+#     #im = add_noise(im)
+#     return im
+
+def pre_processing(im,scale):    
+    tmp = unsharp_mask(im*1.0)
+    tmp = adjust_gamma(tmp,0.1)
+    tmp = normalize2max(rescale(tmp,scale))    
+    return noise_profile(tmp)    
 
 def post_processing(y):
     yy = y[:,:,0] >0.95

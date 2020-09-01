@@ -68,7 +68,7 @@ def main():
             im = im[:,:,0]
         sr,sz = im.shape
         scale = round(10.0/mean_width, 2)
-        im = pre_processing(im,mean_width)
+        im = pre_processing(im,scale)
         im = mbnet.segment(im,invert)
         im = post_processing(im)
         im = resize(im,(sr,sc))
