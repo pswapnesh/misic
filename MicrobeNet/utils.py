@@ -155,6 +155,6 @@ def noise_profile(im,var1 = 0.005):
     gr,gc = np.gradient(im)
     e = gaussian(np.sqrt(gr**2 + gc**2),2)
     #e = np.abs(laplace(gaussian(im,2)))
-    e = normalize2max(gaussian(e,2))
+    #e = normalize2max(gaussian(e,2))
     return random_noise(im,mode = 'localvar',local_vars = 0.0001+var1*(1-e),seed = 42)
     
