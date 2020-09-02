@@ -41,9 +41,7 @@ class Microbenet():
         self.size = 256
         model_path = get_file(
             'microbenet_model',
-            #'https://mycore.core-cloud.net/index.php/s/xwepbpNX1JH8hqL/download')        
-            #'https://mycore.core-cloud.net/index.php/s/scMq6NtCw6ZcGUa/download') ## 0622
-            'https://mycore.core-cloud.net/index.php/s/8sfeRJi4oFdMgZ5/download') ## 0721
+            'https://github.com/pswapnesh/Models/raw/master/MiSiDC04082020.h5') ## 0721
         self.model = load_model(model_path,compile=False)
         self.model.compile(optimizer='adam',
               loss='categorical_crossentropy',
