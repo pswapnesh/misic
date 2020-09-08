@@ -8,7 +8,8 @@ from skimage.io import imread,imsave
 from skimage.filters import gaussian, laplace, threshold_otsu, median
 from skimage.feature import shape_index
 from skimage.feature import hessian_matrix, hessian_matrix_eigvals
-from MicrobeNet.utils import *
+from MiSiC.utils import *
+from scipy.ndimage import gaussian_laplace
 
 
 # def pre_processing(im,scale):    
@@ -29,18 +30,18 @@ def post_processing(y):
     return y[:,:,0] >0.90
     
 
-class Microbenet():
+class MiSiC():
     def __init__(self):
         self.size = 256
         model_path = get_file(
-            'microbenet_model',
+            'misic_model',
             'https://github.com/pswapnesh/Models/raw/master/MiSiDC04082020.h5') ## 0721
         self.model = load_model(model_path,compile=False)
         self.model.compile(optimizer='adam',
               loss='categorical_crossentropy',
               metrics=['accuracy'])
     
-    def shapenet_preprocess(self,im):
+    def shapeindex_preprocess(self,im):
         sh = np.zeros((im.shape[0],im.shape[1],3))
         if np.max(im) ==0:
             return sh
@@ -59,7 +60,7 @@ class Microbenet():
         if invert:
             im = 1.0-im
         im = pad(im,pw,'reflect')
-        sh = self.shapenet_preprocess(im)
+        sh = self.shapeindex_preprocess(im)
         
         tiles,params = extract_tiles(sh,size = self.size,padding = 8)
         

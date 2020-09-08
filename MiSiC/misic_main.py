@@ -6,8 +6,8 @@ import os
 from tqdm import tqdm
 from skimage.io import imread,imsave
 
-from MicrobeNet.utils import *
-from MicrobeNet.microbeNet import *
+from MiSiC.utils import *
+from MiSiC.MiSiC import *
 
 import warnings
 
@@ -57,7 +57,7 @@ def main():
     
     ## load model
     print('loading model ... ')
-    mbnet = Microbenet()
+    misic = MiSiC()
     print('model ready.')    
 
     ## batch processing    
@@ -69,9 +69,9 @@ def main():
         sr,sz = im.shape
         scale = round(10.0/mean_width, 2)
         im = pre_processing(im,scale)
-        im = mbnet.segment(im,invert)
+        im = misic.segment(im,invert)
         im = post_processing(im)
         im = resize(im,(sr,sc))
         im = (im>0.98)*255.0
-        imsave(dst_folder + os.path.basename(f)[:-4] + '_mbnet.tif',im.astype(np.uint8))
+        imsave(dst_folder + os.path.basename(f)[:-4] + '_misic.tif',im.astype(np.uint8))
     

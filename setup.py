@@ -4,11 +4,11 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="microbeNet", # Replace with your own username
+    name="MiSiC", # Replace with your own username
     version="1.0.0",
     author="S.Panigrahi",
     author_email="spanigrahi@imm.cnrs.fr",
-    description="Segmentation of bacteria like objects",
+    description="Microbe segmentation in dense colonies",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://imm.cnrs.fr",
@@ -20,7 +20,7 @@ setuptools.setup(
    'tqdm'
     ],
     entry_points = {
-        'console_scripts': ['mbnet=MicrobeNet.mbnet:main'],
+        'console_scripts': ['mbnet=MiSiC.misic_main:main'],
     },
     classifiers=[
         "Programming Language :: Python :: 3",
