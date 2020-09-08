@@ -11,11 +11,6 @@ from skimage.feature import hessian_matrix, hessian_matrix_eigvals
 from MicrobeNet.utils import *
 
 
-
-
-
-
-
 # def pre_processing(im,scale):    
 #     tmp = unsharp_mask(im*1.0)
 #     tmp = adjust_gamma(tmp,0.1)
