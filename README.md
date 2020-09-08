@@ -20,13 +20,17 @@ mbnet -lb True -mw 8 -s /path/to/source/folder/*.tif -d /path/to/destination/fol
 
 ### use package
 from MiSiC.MiSiC import *
+from skimage.io import imsave,imread
 
 misic = MiSiC()
 
 im = imread(filename)
 
-im = pre_processing(im,mean_width = 10)
+im = pre_processing(im,scale = 1)
 
 y = misic.segment(im,invert = True) # invert = True for light backgraound images like Phase contrast
 
 y = post_processing(y)
+
+imsave('segmented.tif', (y*255).astype(np.uint8))
+
