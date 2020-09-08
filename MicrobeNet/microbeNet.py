@@ -16,25 +16,23 @@ from MicrobeNet.utils import *
 
 
 
-# def pre_processing(im,mean_width = 10):
-#     scale = round(10.0/mean_width, 2)
-#     if mean_width !=10:
-#         im = rescale(im,scale)
-#     #im = add_noise(im)
-#     return im
+# def pre_processing(im,scale):    
+#     tmp = unsharp_mask(im*1.0)
+#     tmp = adjust_gamma(tmp,0.1)
+#     tmp = normalize2max(rescale(tmp,scale))    
+#     return noise_profile(tmp)    
 
 def pre_processing(im,scale):    
     tmp = unsharp_mask(im*1.0)
-    tmp = adjust_gamma(tmp,0.1)
-    tmp = normalize2max(rescale(tmp,scale))    
-    return noise_profile(tmp)    
+    #tmp = adjust_gamma(tmp,0.25)    
+    tmp = (rescale(im,scale))        
+    tmp = gaussian_laplace(tmp,sigma = 1)
+    tmp = normalize2max(tmp)    
+    return noise_profile(tmp,0.00005)
 
 def post_processing(y):
-    yy = y[:,:,0] >0.95
-    yy = y[:,:,0]-gaussian(y[:,:,1],0.5)
-    yy = binary_opening(yy > 0.5)
-    return yy  
-
+    return y[:,:,0] >0.90
+    
 
 class Microbenet():
     def __init__(self):
