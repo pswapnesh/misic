@@ -18,16 +18,17 @@ from scipy.ndimage import gaussian_laplace
 #     tmp = normalize2max(rescale(tmp,scale))    
 #     return noise_profile(tmp)    
 
-def pre_processing(im,scale):    
+def pre_processing(im,scale,noise_var = 0.0001):    
     tmp = unsharp_mask(im*1.0)
     #tmp = adjust_gamma(tmp,0.25)    
     tmp = (rescale(im,scale))        
-    tmp = gaussian_laplace(tmp,sigma = 2)
+    tmp = gaussian_laplace(tmp,sigma = 1.8)
     tmp = 1-normalize2max(tmp)    
-    return noise_profile(tmp,0.00005*scale)
+    return noise_profile(tmp,noise_var*scale)
 
-def post_processing(y):
-    return y[:,:,0] >0.90
+def post_processing(y,im):
+    
+    return resize(y[:,:,0],im.shape) >0.90
     
 
 class MiSiC():
