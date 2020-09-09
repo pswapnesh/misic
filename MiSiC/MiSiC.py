@@ -22,9 +22,9 @@ def pre_processing(im,scale):
     tmp = unsharp_mask(im*1.0)
     #tmp = adjust_gamma(tmp,0.25)    
     tmp = (rescale(im,scale))        
-    tmp = gaussian_laplace(tmp,sigma = 1)
-    tmp = normalize2max(tmp)    
-    return noise_profile(tmp,0.00005)
+    tmp = gaussian_laplace(tmp,sigma = 2)
+    tmp = 1-normalize2max(tmp)    
+    return noise_profile(tmp,0.00005*scale)
 
 def post_processing(y):
     return y[:,:,0] >0.90
