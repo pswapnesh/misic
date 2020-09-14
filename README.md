@@ -7,8 +7,10 @@ Requires version python version 3.6
 `pip install git+https://github.com/pswapnesh/MiSIC.git`
 
 or 
-
+CPU -version
 `pip install https://github.com/pswapnesh/MiSiC/archive/master.zip`
+GPU -version
+`https://github.com/pswapnesh/MiSiC/archive/gpu.zip`
 
 
 ## Usage
