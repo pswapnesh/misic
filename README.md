@@ -41,7 +41,7 @@ im = pre_processing(im,scale = 1)
 y = misic.segment(im,invert = True)
 
 # if you need both the body y[:,:,0] and contour y[:,:,1] skip the post processing.
-y = post_processing(y)
+y = post_processing(y,im)
 
 # save 8-bit segmented image and use it as you like
 imsave('segmented.tif', (y*255).astype(np.uint8))
