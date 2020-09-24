@@ -4,11 +4,11 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="MiSiC", # Replace with your own username
+    name="BaSiC", # Replace with your own username
     version="1.0.0",
     author="S.Panigrahi",
     author_email="spanigrahi@imm.cnrs.fr",
-    description="Microbe segmentation in dense colonies",
+    description="Bacteria segmentation in dense colonies",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://imm.cnrs.fr",
@@ -20,12 +20,12 @@ setuptools.setup(
    'tqdm'
     ],
     entry_points = {
-        'console_scripts': ['mbnet=MiSiC.misic_main:main'],
+        'console_scripts': ['mbnet=BaSiC.basic_main:main'],
     },
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.5',
+    python_requires='>=3.6',
 )
