@@ -41,7 +41,7 @@ scale = (10/mean_width)
 misic = MiSiC()
 
 # preprocess using inbuit function or if you are feeling lucky use your own preprocessing
-im = pre_processing(im,scale = scale, noise_variance = noise_variance)
+im = pre_processing(im,scale = scale, noise_var = noise_variance)
 
 # segment the image with invert = True for light backgraound images like Phase contrast
 y = misic.segment(im,invert = True)
