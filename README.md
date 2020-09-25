@@ -1,14 +1,14 @@
-# BaSiC
+# MiSiC
 ### Microbe segmentation in dense colonies.
 
 ## Installation
 Requires version python version 3.6
 
-`pip install git+https://github.com/pswapnesh/BaSiC.git`
+`pip install git+https://github.com/pswapnesh/MiSIC.git`
 
 or 
 
-`pip install https://github.com/pswapnesh/BaSiC/archive/master.zip`
+`pip install https://github.com/pswapnesh/MiSiC/archive/master.zip`
 
 
 ## Usage
@@ -19,7 +19,7 @@ or
 
 ### use package
 ```python
-from BaSiC.BaSiC import *
+from MiSiC.MiSiC import *
 from skimage.io import imsave,imread
 
 # read image using your favorite package
@@ -31,14 +31,14 @@ mean_width = 8
 # compute scaling factor
 scale = (10/mean_width)
 
-# Initialize BaSiC
-basic = BaSiC()
+# Initialize MiSiC
+misic = MiSiC()
 
 # preprocess using inbuit function or if you are feeling lucky use your own preprocessing
 im = pre_processing(im,scale = 1)
 
 # segment the image with invert = True for light backgraound images like Phase contrast
-y = basic.segment(im,invert = True)
+y = misic.segment(im,invert = True)
 
 # if you need both the body y[:,:,0] and contour y[:,:,1] skip the post processing.
 y = post_processing(y,im)

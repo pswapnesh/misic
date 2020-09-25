@@ -8,7 +8,7 @@ from skimage.io import imread,imsave
 from skimage.filters import gaussian, laplace, threshold_otsu, median
 from skimage.feature import shape_index
 from skimage.feature import hessian_matrix, hessian_matrix_eigvals
-from BaSiC.utils import *
+from MiSiC.utils import *
 from scipy.ndimage import gaussian_laplace
 
 
@@ -31,11 +31,11 @@ def post_processing(y,im):
     return resize(y[:,:,0],im.shape) >0.90
     
 
-class BaSiC():
+class MiSiC():
     def __init__(self):
         self.size = 256
         model_path = get_file(
-            'basic_model',
+            'misic_model',
             'https://github.com/pswapnesh/Models/raw/master/MiSiDC04082020.h5') ## 0721
         self.model = load_model(model_path,compile=False)
         self.model.compile(optimizer='adam',
