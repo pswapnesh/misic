@@ -22,11 +22,17 @@ or
 from MiSiC.MiSiC import *
 from skimage.io import imsave,imread
 
+filename = 'awesome_image.tif'
+
 # read image using your favorite package
 im = imread(filename)
 
+# Parameters that need to be changed
+## Ideally, use a single image to fine tune two parameters : mean_width and noise_variance (optional)
+
 #input the approximate mean width of microbe under consideration
 mean_width = 8
+noise_variance = 0.0001
 
 # compute scaling factor
 scale = (10/mean_width)
@@ -35,7 +41,7 @@ scale = (10/mean_width)
 misic = MiSiC()
 
 # preprocess using inbuit function or if you are feeling lucky use your own preprocessing
-im = pre_processing(im,scale = 1)
+im = pre_processing(im,scale = scale, noise_variance = noise_variance)
 
 # segment the image with invert = True for light backgraound images like Phase contrast
 y = misic.segment(im,invert = True)
