@@ -26,9 +26,9 @@ def pre_processing(im,scale,noise_var = 0.0001):
     tmp = 1-normalize2max(tmp)    
     return noise_profile(tmp,noise_var*scale)
 
-def post_processing(y,im):
+def post_processing(y,orig_size):
     
-    return resize(y[:,:,0],im.shape) >0.90
+    return resize(y[:,:,0],orig_size) >0.90
     
 
 class MiSiC():
