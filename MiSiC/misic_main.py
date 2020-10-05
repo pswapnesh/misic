@@ -66,12 +66,12 @@ def main():
         im = imread(f)        
         if len(im.shape)>2:
             im = im[:,:,0]
-        sr,sz = im.shape
+        sr,sc = im.shape
         scale = round(10.0/mean_width, 2)
         im = pre_processing(im,scale)
         im = misic.segment(im,invert)
-        im = post_processing(im)
-        im = resize(im,(sr,sc))
+        im = post_processing(im,[sr,sc])
+        #im = resize(im,(sr,sc))
         im = (im>0.98)*255.0
         imsave(dst_folder + os.path.basename(f)[:-4] + '_misic.tif',im.astype(np.uint8))
     
