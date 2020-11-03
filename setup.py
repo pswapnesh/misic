@@ -16,7 +16,7 @@ setuptools.setup(
     #packages=[''],
     install_requires=[
    'scikit-image==0.16.2',
-   'tensorflow==2.0.0',
+   'tensorflow==2.0.3',
    'tqdm'
     ],
     entry_points = {
