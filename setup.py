@@ -15,6 +15,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     #packages=[''],
     install_requires=[
+   'h5py==2.10.0',
    'scikit-image==0.16.2',
    'tensorflow',
    'tqdm'
