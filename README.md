@@ -24,7 +24,6 @@ im = imread(filename)
 
 #input the approximate mean width of microbe under consideration
 mean_width = 8
-noise_variance = 0.0001
 
 # compute scaling factor
 scale = (10/mean_width)
@@ -36,7 +35,7 @@ misic = MiSiC()
 im = rescale(im,scale,preserve_range = True)
 
 # add local noise
-img = add_noise(im,0.05,invert = False)
+img = add_noise(im,sensitivity = 0.13,invert = True)
 
 # segment
 yp = misic.segment(img,invert = True)
