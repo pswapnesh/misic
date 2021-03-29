@@ -2,20 +2,11 @@
 ### Microbe segmentation in dense colonies.
 
 ## Installation
-Requires version python version 3.6
+Requires version python version 3.6 or 3.7
 
-`pip install git+https://github.com/pswapnesh/MiSIC.git`
-
-or 
-
-`pip install https://github.com/pswapnesh/MiSiC/archive/master.zip`
-
+`pip install TOBEFILLED`
 
 ## Usage
-### command line
-`mbnet --light_background True --mean_width 8 --src '/path/to/source/folder/\*.tif' --dst '/path/to/destination/folder/'`
-
-`mbnet -lb True -mw 8 -s /path/to/source/folder/*.tif -d /path/to/destination/folder/`
 
 ### use package
 ```python
