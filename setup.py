@@ -16,13 +16,10 @@ setuptools.setup(
     #packages=[''],
     install_requires=[
    'h5py==2.10.0',
-   'scikit-image==0.16.2',
-   'tensorflow==2.0.1',
+   'scikit-image',
+   'tensorflow==2.2',
    'tqdm'
     ],
-    entry_points = {
-        'console_scripts': ['mbnet=MiSiC.misic_main:main'],
-    },
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
