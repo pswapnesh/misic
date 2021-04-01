@@ -4,7 +4,7 @@
 ## Installation
 Requires version python version 3.6 or 3.7
 
-`pip install TOBEFILLED`
+`pip install MiSiC==1.0.0`
 
 ## Usage
 
