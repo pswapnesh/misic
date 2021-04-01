@@ -35,7 +35,7 @@ class MiSiC():
         #sh = 0.5*(sh+1.0)
         return sh
     
-    def segment(self,im,invert = False,exclude = 32):        
+    def segment(self,im,invert = False,exclude = 16):        
         sh = self.shapeindex_preprocess(im)        
         sh = -sh if invert else sh
         tiles,params = extract_tiles(sh,size = self.size,exclude = exclude)               
