@@ -7,7 +7,7 @@ setuptools.setup(
     name="MiSiC", # Replace with your own username
     version="1.0.0",
     author="S.Panigrahi",
-    author_email="spanigrahi@imm.cnrs.fr",
+    author_email="spanigrahi_at_imm.cnrs.fr",
     description="Microbe segmentation in dense colonies",
     long_description=long_description,
     long_description_content_type="text/markdown",
