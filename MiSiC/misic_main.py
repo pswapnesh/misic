@@ -68,10 +68,11 @@ def main():
             im = im[:,:,0]
         sr,sc = im.shape
         scale = round(10.0/mean_width, 2)
-        im = pre_processing(im,scale)
-        im = misic.segment(im,invert)
-        im = post_processing(im,[sr,sc])
-        #im = resize(im,(sr,sc))
-        im = (im>0.98)*255.0
-        imsave(dst_folder + os.path.basename(f)[:-4] + '_misic.tif',im.astype(np.uint8))
+        im1 = rescale(im,scale,preserve_range = False)
+        im1 = add_noise(im1,sensitivity = 0.1,invert = True)
+        yp = misic.segment(im1,invert=invert)
+        yp = resize(yp,[sr,sc,-1])
+        
+        yp = postprocess_ws(img,yp)
+        imsave(dst_folder + os.path.basename(f)[:-4] + '_misic.tif',yp)
     
