@@ -17,7 +17,7 @@ setuptools.setup(
     install_requires=[
    'h5py==2.10.0',
    'scikit-image',
-   'tensorflow==2.1.0',
+   'tensorflow==2.4.0',
    'tqdm'
     ],
     entry_points = {
