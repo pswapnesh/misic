@@ -4,23 +4,16 @@
 ## Installation
 Requires version python version 3.6
 
-`pip install git+https://github.com/pswapnesh/MiSIC.git`
-
-or 
-
-`pip install https://github.com/pswapnesh/MiSiC/archive/master.zip`
+`pip install MiSiC`
 
 
 ## Usage
-### command line
-`mbnet --light_background True --mean_width 8 --src '/path/to/source/folder/\*.tif' --dst '/path/to/destination/folder/'`
-
-`mbnet -lb True -mw 8 -s /path/to/source/folder/*.tif -d /path/to/destination/folder/`
 
 ### use package
 ```python
 from MiSiC.MiSiC import *
 from skimage.io import imsave,imread
+from skimage.transform import resize,rescale
 
 filename = 'awesome_image.tif'
 
@@ -32,7 +25,6 @@ im = imread(filename)
 
 #input the approximate mean width of microbe under consideration
 mean_width = 8
-noise_variance = 0.0001
 
 # compute scaling factor
 scale = (10/mean_width)
@@ -41,14 +33,18 @@ scale = (10/mean_width)
 misic = MiSiC()
 
 # preprocess using inbuit function or if you are feeling lucky use your own preprocessing
-im = pre_processing(im,scale = scale, noise_var = noise_variance)
+im = rescale(im,scale,preserve_range = True)
 
-# segment the image with invert = True for light backgraound images like Phase contrast
-y = misic.segment(im,invert = True)
+# add local noise
+img = add_noise(im,sensitivity = 0.13,invert = True)
 
-# if you need both the body y[:,:,0] and contour y[:,:,1] skip the post processing.
-y = post_processing(y,im.shape)
+# segment
+yp = misic.segment(img,invert = True)
+yp = resize(yp,[sr,sc,-1])
+
+# watershed based post processing
+yp = postprocess_ws(img,yp)
 
 # save 8-bit segmented image and use it as you like
-imsave('segmented.tif', (y*255).astype(np.uint8))
+imsave('segmented.tif', yp.astype(np.uint8))
 
