@@ -52,8 +52,8 @@ def add_noise(im,sensitivity = 0.1,invert = False,seed = 42):
 
 class MISIC():
     def __init__(self,model_name = 'MiSiC/MiSiDC04082020.h5'):
-        model_path = get_file('misic_model','https://github.com/pswapnesh/Models/raw/master/MiSiDC04082020.h5') ## 0721
-        self.model = load_model(model_path,compile=False)
+        #model_path = get_file('misic_model','https://github.com/pswapnesh/Models/raw/master/MiSiDC04082020.h5') ## 0721
+        self.model = load_model(model_name,compile=False)
         self.model.compile(optimizer='adam',loss='categorical_crossentropy',metrics=['accuracy'])
         self.size = 256        
         

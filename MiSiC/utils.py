@@ -1,163 +1,75 @@
-import matplotlib.pyplot as plt
 import numpy as np
-from skimage.transform import resize,rescale
-from skimage.util import random_noise,pad
-#from skimage.external.tifffile import imread,imsave
-from skimage.io import imread,imsave
-from skimage.filters import gaussian, laplace, threshold_otsu, median
-from skimage.feature import shape_index
-from skimage.feature import hessian_matrix, hessian_matrix_eigvals
-
+from skimage.util import view_as_windows
 
 
 def normalize2max(im):
+    ''' normalize to max '''
     im = im-np.min(im)
     return im/np.max(im)
 
 def getPatch(im,sz):
+    ''' get random patch from image of size szXsz '''
     sr,sc = im.shape
     rr = np.random.randint(sr-sz)
     cc = np.random.randint(sc-sz)
     return im[rr:rr+sz,cc:cc+sz],rr,cc
 
-from skimage.util import view_as_windows,pad
-def get_padding(im,size = 256,stride = 256):
-    sr,sc = im.shape[0],im.shape[1]    
-    pad_r = stride-((sr-size)%stride)
-    pad_c = stride-((sc-size)%stride)
-    
-    if (sr-size)%stride ==0:
-        pad_r=0
-    if (sc-size)%stride ==0:
-        pad_c=0
-    return int(pad_r),int(pad_c)
 
-def extract_tiles(im,size=256,padding=16):     
-    
-    stride = size - 2*padding    
+
+def extract_tiles(im,size = 512,exclude = 12):
+    ''' extract tiles from image of size 'size' to be stiched back such that 'exclude' pixels near border of tile are excluded '''
+    size = size-2*exclude
+
     if len(im.shape)<3:
         im = im[:,:,np.newaxis]
-    sr,sc,ch = im.shape    
+    sr,sc,ch = im.shape 
     
-    pad_r,pad_c = get_padding(im,size,stride)
+    pad_row = 0 if sr%size == 0 else (int(sr/size)+1) * size - sr
+    pad_col = 0 if sc%size == 0 else (int(sc/size)+1) * size - sc
+    im1 = np.pad(im,((0,pad_row),(0,pad_col),(0,0)),mode = 'reflect')
+    sr1,sc2,_ = im1.shape
     
-    im = pad(im,((0,pad_r),(0,pad_c),(0,0)),'reflect')
-    patches = view_as_windows(im,(size,size,ch),stride)    
-    patches = patches[:,:,0,:]
-    
-    sh = list(patches.shape)
-    sh[1] = sh[0]*sh[1]
-    sh = np.delete(sh,0)
-    patches = np.reshape(patches,tuple(sh))
-    
-    R = np.arange(im.shape[0])
-    rv = view_as_windows(R,size,stride) 
-    rv = rv[:,0]
-    
-    C = np.arange(im.shape[1])
-    cv = view_as_windows(C,size,stride) 
-    cv = cv[:,0]
+
+    rv = np.arange(0,im1.shape[0],size)
+    cv = np.arange(0,im1.shape[1],size)
     cc,rr = np.meshgrid(cv,rv)
     positions = np.concatenate((rr.ravel()[:,np.newaxis],cc.ravel()[:,np.newaxis]),axis = 1)
-    
+        
+    im1 = np.pad(im1,((exclude,exclude),(exclude,exclude),(0,0)),mode = 'reflect')
+
     params = {}
-    params['padding'] = padding
-    params['pad_r'] = pad_r
-    params['pad_c'] = pad_c
-    params['im_size'] = im.shape[:2]
+    params['size'] = size
+    params['exclude'] = exclude
+    params['pad_row'] = pad_row
+    params['pad_col'] = pad_col
+    params['im_size'] = [sr1,sc2]
     params['positions'] = positions
     
+    patches = view_as_windows(im1,(size+2*exclude,size+2*exclude,ch),size)    
+    patches = patches[:,:,0,:,:,:]
+    patches = np.reshape(patches,(-1,patches.shape[2],patches.shape[3],patches.shape[4]))
     return patches,params
 
+
 def stitch_tiles(patches,params):
-    padding = params['padding']
-    pad_r = params['pad_r']
-    pad_c = params['pad_c']
+    ''' stitch tiles generated from extract tiles '''
+    size = params['size']
+    pad_row = params['pad_row']
+    pad_col = params['pad_col']
     im_size = params['im_size']
     positions = params['positions']
-    size = patches.shape[1]
+    exclude = params['exclude']
+        
     
-    result = np.zeros((im_size[0],im_size[1],patches.shape[-1]))
+    result = np.zeros((im_size[0],im_size[1],patches.shape[-1]))*1.0
     
-    for i,pos in enumerate(positions):
+    
+    for i,pos in enumerate(positions):        
         rr,cc = pos[0],pos[1]    
-        result[rr:rr+size,cc:cc+size,:] += pad(patches[i,padding:-padding,padding:-padding,:],((padding,padding),(padding,padding),(0,0)),'constant')
-    if pad_r>0:
-        result = result[:-pad_r,:]
-    if pad_c>0:
-        result = result[:,:-pad_c]
+        result[rr:rr+size,cc:cc+size,:] = patches[i,exclude:-exclude,exclude:-exclude,:]*1.0
+    
+    if pad_row>0:
+        result = result[:-pad_row,:]
+    if pad_col>0:
+        result = result[:,:-pad_col]
     return result
-
-
-def jaccard_coef(y_true, y_pred):
-    smooth = 0.001
-    #y_pred = K.cast(K.greater(y_pred, .8), dtype='float32') # .5 is the threshold
-    #y_true = K.cast(K.greater(y_true, .9), dtype='float32') # .5 is the threshold
-    intersection = np.mean(y_true * y_pred)
-    sum_ = np.mean(y_true + y_pred)
-
-    jac = (intersection + smooth) / (sum_ - intersection + smooth)
-
-    return jac
-
-def get_rand_patch(im,sz):
-    sr,sc = im.shape
-    rr = np.random.randint(sr-sz)
-    cc = np.random.randint(sc-sz)
-    return im[rr:rr+sz,cc:cc+sz]
-
-def find_best_parameter(im,mbnet,scale=1,invert = True):
-    sr,sc = im.shape
-    N = 5
-    if scale != 1:
-        im = rescale(im,scale)
-        
-    variances = np.arange(0.0,0.01,0.0005)
-    imgs = []
-    for v in variances:    
-        if v ==0:
-            r1 = im*1.0
-        else:
-            r1 = random_noise(im,mode = 'gaussian',var = v,seed = 42)
-        r1 = normalize2max(r1)
-        if invert:
-            r1 = 1.0-r1
-        random_patches = np.array([mbnet.shapenet_preprocess(get_rand_patch(r1,256)) for ii in range(N)])            
-        y1 = mbnet.model.predict(random_patches)        
-        imgs.append(y1)
-    
-    imgs = np.array(imgs)
-
-    ym = np.mean(1.0*(imgs>0.98),axis = 0)
-    J = np.array([jaccard_coef(i,ym) for i in imgs])
-    idx = np.where(J == np.max(J))[0][0]    
-    return variances[idx],[variances,J]
-        
-def predict_small_images(im):
-    sr,sc = im.shape
-    sz = 256
-    r = int(np.ceil(sz/sr))
-    im = np.tile(im,(r,r))
-    if im.shape[0]>sz:
-        y = shnet.segment(im)  
-        return y[:sr,:sc,:]
-    else:
-        x = shnet.shapenet_preprocess(im)
-        y = shnet.unet.model.predict(x[np.newaxis,:])    
-    return y[0,:sr,:sc,:]
-        
-
-# def unsharp_mask(im):
-#     return im - 0.8*gaussian(laplace(im),2)
-
-def unsharp_mask(im,c=0.6,sigma=1):
-    return (c/(2*c-1))*im - (1-c)/(2*c - 1)*gaussian(im,sigma)
-
-def noise_profile(im,var1 = 0.005):    
-    im = normalize2max(im)
-    gr,gc = np.gradient(im)
-    e = gaussian(np.sqrt(gr**2 + gc**2),0.5)
-    #e = np.abs(laplace(gaussian(im,2)))
-    e = normalize2max(e)
-    return random_noise(im,mode = 'localvar',local_vars = 0.00001+var1*(1-e),seed = 42)
-    
