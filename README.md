@@ -2,7 +2,7 @@
 ### Microbe segmentation in dense colonies.
 
 ## Installation
-Requires version python version 3.6
+Requires version python version 3.6/7
 
 `pip install MiSiC`
 
