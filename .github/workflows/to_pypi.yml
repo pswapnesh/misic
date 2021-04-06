@@ -27,7 +27,7 @@ jobs:
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-          TWINE_REPOSITORY: https://upload.pypi.org/legacy/
+          TWINE_REPOSITORY: https://upload.pypi.org
         run: |
           python setup.py sdist bdist_wheel
           twine upload dist/*
