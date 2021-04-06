@@ -1,4 +1,4 @@
-name: Test & Upload to TestPyPI
+name: Upload to TestPyPI
 on:
   workflow_dispatch:
 
