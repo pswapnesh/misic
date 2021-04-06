@@ -25,10 +25,6 @@ jobs:
           # Install the package from setup.py
       
       - name: Build and publish to PyPI
-#         env:
-#           TWINE_USERNAME: __token__
-#           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-#           TWINE_REPOSITORY: https://upload.pypi.org/legacy/
         run: |
           python -m build --sdist --wheel --outdir dist/
           # twine --repository misic upload dist/*
