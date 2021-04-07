@@ -13,7 +13,8 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://imm.cnrs.fr",
     packages=setuptools.find_packages(),
-    #packages=[''],
+    package_data={'': ['MiSiDC04082020.h5']},
+    include_package_data=True,
     install_requires=[
    'h5py==2.10.0',
    'scikit-image',
