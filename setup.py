@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="MiSiC", # Replace with your own username
-    version="1.0.8",
+    version="1.0.9",
     author="S.Panigrahi",
     author_email="spanigrahi@imm.cnrs.fr",
     description="Microbe segmentation in dense colonies",
