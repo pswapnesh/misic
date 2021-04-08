@@ -16,9 +16,9 @@ setuptools.setup(
     package_data={'': ['MiSiDC04082020.h5']},
     include_package_data=True,
     install_requires=[
-   'h5py==2.10.0',
+   'h5py',
    'scikit-image',
-   'tensorflow>2.0',
+   'tensorflow',
    'tqdm'
     ],
     entry_points = {
