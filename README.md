@@ -30,7 +30,7 @@ mean_width = 8
 scale = (10/mean_width)
 
 # Initialize MiSiC
-misic = MiSiC()
+mseg = MiSiC()
 
 # preprocess using inbuit function or if you are feeling lucky use your own preprocessing
 im = rescale(im,scale,preserve_range = True)
@@ -39,7 +39,7 @@ im = rescale(im,scale,preserve_range = True)
 img = add_noise(im,sensitivity = 0.13,invert = True)
 
 # segment
-yp = misic.segment(img,invert = True)
+yp = mseg.segment(img,invert = True)
 yp = resize(yp,[sr,sc,-1])
 
 # watershed based post processing
