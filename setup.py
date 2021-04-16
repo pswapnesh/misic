@@ -5,8 +5,8 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="MiSiC", # Replace with your own username
-    version="1.0.10",
-    author="S.Panigrahi",
+    version="1.1.0",
+    author="imm-lcb-iam-pswap-le",
     author_email="spanigrahi@imm.cnrs.fr",
     description="Microbe segmentation in dense colonies",
     long_description=long_description,
@@ -22,7 +22,7 @@ setuptools.setup(
    'tqdm'
     ],
     entry_points = {
-        'console_scripts': ['mbnet=MiSiC.misic_main:main'],
+        'console_scripts': ['mbnet=misic.misic_main:main'],
     },
     classifiers=[
         "Programming Language :: Python :: 3",

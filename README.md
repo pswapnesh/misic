@@ -4,14 +4,14 @@
 ## Installation
 Requires version python version 3.6/7
 
-`pip install MiSiC`
+`pip install misic`
 
 
 ## Usage
 
 ### use package
 ```python
-from MiSiC.MiSiC import *
+from misic.misic import *
 from skimage.io import imsave,imread
 from skimage.transform import resize,rescale
 
