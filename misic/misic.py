@@ -9,6 +9,7 @@ from skimage.io import imread,imsave
 from skimage.filters import gaussian
 from skimage.feature import shape_index
 from misic.utils import *
+from misic.extras import *
 
 
 
@@ -30,12 +31,10 @@ class MiSiC():
         if np.max(im) ==0:
             return sh
         
-        # pad to minimize edge artifacts
-        pw = 8
-        im = np.pad(im,pw,'reflect')            
-        sh[:,:,0] = shape_index(im,1)[pw:-pw,pw:-pw]
-        sh[:,:,1] = shape_index(im,1.5)[pw:-pw,pw:-pw]
-        sh[:,:,2] = shape_index(im,2)[pw:-pw,pw:-pw]
+        # pad to minimize edge artifacts                    
+        sh[:,:,0] = shape_index(im,1, mode='reflect')
+        sh[:,:,1] = shape_index(im,1.5, mode='reflect')
+        sh[:,:,2] = shape_index(im,2, mode='reflect')
         #sh = 0.5*(sh+1.0)
         return sh
     
