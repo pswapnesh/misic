@@ -20,11 +20,11 @@ def postprocess_ws(im,yp):
     # mask dilated
     mask = (yp[:,:,0] > 0.4)
     # watershed potential
-    d = shape_index(im,1.5)        
+    d = shape_index(im,1.5,mode = 'reflect')        
     
     # markers
     # get poles from contour predictions as markers
-    sh = shape_index(yp[:,:,1],1)
+    sh = shape_index(yp[:,:,1],1,mode = 'reflect')
     markers,c = label(yp[:,:,0] > 0.95)
     # ther markers should be unique to each cell 
     markers = markers*(sh<-0.5)  # only poles    
