@@ -12,6 +12,7 @@ Requires version python version 3.6/7
 ### use package
 ```python
 from misic.misic import *
+from misic.extras import *
 from skimage.io import imsave,imread
 from skimage.transform import resize,rescale
 
@@ -19,6 +20,8 @@ filename = 'awesome_image.tif'
 
 # read image using your favorite package
 im = imread(filename)
+
+sr,sc = im.shape
 
 # Parameters that need to be changed
 ## Ideally, use a single image to fine tune two parameters : mean_width and noise_variance (optional)
@@ -40,9 +43,12 @@ img = add_noise(im,sensitivity = 0.13,invert = True)
 
 # segment
 yp = mseg.segment(img,invert = True)
-yp = resize(yp,[sr,sc,-1])
+yp = resize(yp,(sr,sc))
 
-# watershed based post processing
+# body = resize(yp[:,:,0],[sr,sc])
+# contours = resize(yp[:,:,1],[sr,sc])
+
+# watershed based post processing (optional)
 yp = postprocess_ws(img,yp)
 
 # save 8-bit segmented image and use it as you like
