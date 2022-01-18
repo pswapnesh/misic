@@ -5,8 +5,8 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="misic", # Replace with your own username
-    version="1.1.2",
-    author="imm-lcb-iam-pswap-le",
+    version="1.1.3",
+    author="S.Panigrahi, IMM ",
     author_email="spanigrahi@imm.cnrs.fr",
     description="Microbe segmentation in dense colonies",
     long_description=long_description,
@@ -29,5 +29,5 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.5',
+    python_requires='>=3.6',
 )
