@@ -4,6 +4,8 @@ from skimage.util import view_as_windows
 
 def normalize2max(im):
     ''' normalize to max '''
+    if np.max(im) == 0:
+        return im
     im = im-np.min(im)
     return im/np.max(im)
 
@@ -13,6 +15,19 @@ def getPatch(im,sz):
     rr = np.random.randint(sr-sz)
     cc = np.random.randint(sc-sz)
     return im[rr:rr+sz,cc:cc+sz],rr,cc
+
+
+def get_coords(sr,sc,size=256,exclude = 16):
+    rr = np.arange(0,sr,size-2*exclude)
+    d = (size-2*exclude) - sr%(size-2*exclude)
+    rr[-1] = sr-(size-2*exclude) 
+    cc = np.arange(0,sc,size-2*exclude)
+    d = (size-2*exclude) - sc%(size-2*exclude)
+    cc[-1] =sc -(size-2*exclude) 
+    rr,cc = np.meshgrid(rr,cc)
+    rr = rr.ravel()
+    cc = cc.ravel()
+    return rr,cc
 
 
 
@@ -73,3 +88,82 @@ def stitch_tiles(patches,params):
     if pad_col>0:
         result = result[:,:-pad_col]
     return result
+
+
+
+# def tile_generator(im,size = 256, exclude = 16):
+#     sr,sc,_ = im.shape
+#     rr,cc = get_coords(sr,sc,size,exclude)
+#     def generator():
+#         for r,c in zip(rr,cc):
+#             r0,r1 = r-exclude,r-exclude+size
+#             c0,c1 = c-exclude,c-exclude+size    
+#             if (r0 > 0) & (r1 < sr) & (c0 > 0) & (c1 < sc):
+#                 tmp = im[r0:r1,c0:c1,:]
+#                 # top
+#             elif (r0 < 0) & (r1 < sr) & (c0 > 0) & (c1 < sc):
+#                 tmp = np.pad(im[r:r1,c0:c1,:],((-r0,0),(0,0),(0,0)),'reflect')
+#                 # bottom
+#             elif (r0 > 0) & (r1 > sr) & (c0 > 0) & (c1 < sc):
+#                 tmp = np.pad(im[r0:sr,c0:c1,:],((0,r1-sr),(0,0),(0,0)),'reflect')
+#                 # left
+#             elif (r0 > 0) & (r1 < sr) & (c0 < 0) & (c1 < sc):
+#                 tmp = np.pad(im[r0:r1,c:c1,:],((0,0),(-c0,0),(0,0)),'reflect')
+#                 # right
+#             elif (r0 > 0) & (r1 < sr) & (c0 > 0) & (c1 > sc):
+#                 tmp = np.pad(im[r0:r1,c0:sc,:],((0,0),(0,c1-sc),(0,0)),'reflect')    
+#                 # top left
+#             elif (r0 < 0) & (r1 < sr) & (c0 < 0) & (c1 < sc):
+#                 tmp = np.pad(im[r:r1,c:c1,:],((-r0,0),(-c0,0),(0,0)),'reflect')    
+#                 # top right
+#             elif (r0 < 0) & (r1 < sr) & (c0 > 0) & (c1 > sc):
+#                 tmp = np.pad(im[r:r1,c0:sc,:],((-r0,0),(0,c1-sc),(0,0)),'reflect') 
+#                 # bottom left
+#             elif (r0 > 0) & (r1 > sr) & (c0 < 0) & (c1 < sc):
+#                 tmp = np.pad(im[r0:,c:c1,:],((0,r1-sr),(-c0,0),(0,0)),'reflect') 
+#                 # bottom right
+#             elif (r0 > 0) & (r1 > sr) & (c0 > 0) & (c1 > sc):
+#                 tmp = np.pad(im[r0:sr,c0:sc,:],((0,r1-sr),(0,c1-sc),(0,0)),'reflect') 
+#                 # smaller image
+#             elif (r0 < 0) & (r1 > sr) & (c0 < 0) & (c1 > sc):
+#                 tmp = np.pad(im,((-r0,r1-sr),(-c0,c1-sc),(0,0)),'reflect') 
+#             yield tmp
+#     return generator
+        
+
+# def stitch_tiles(res,gen):
+#     sr,sc , _ = res.shape
+#     rr,cc = get_coords(sr,sc,size,exclude)
+#     for r,c,img in zip(rr,cc,gen):
+#         r0,r1 = r-exclude,r-exclude+size
+#         c0,c1 = c-exclude,c-exclude+size    
+#         #print(r0,r1,c0,c1)
+#         if (r0 > 0) & (r1 < sr) & (c0 > 0) & (c1 < sc):
+#             res[r:r-2*exclude+size,r:r-2*exclude+size,:] = img[exclude:-exclude,exclude:-exclude,:]
+#             # top
+#         elif (r0 < 0) & (r1 < sr) & (c0 > 0) & (c1 < sc):
+#             res[r:r+size-2*exclude,c:c+size-2*exclude,:] = img[exclude:-exclude,exclude:-exclude,:]
+#             # bottom
+#         elif (r0 > 0) & (r1 > sr) & (c0 > 0) & (c1 < sc):
+#             res[r:sr,c:c+size-2*exclude,:] = img[exclude:-(r1-sr),exclude:-exclude,:]
+#             # left
+#         elif (r0 > 0) & (r1 < sr) & (c0 < 0) & (c1 < sc):
+#             res[r:r+size-2*exclude,c:c+size-2*exclude,:] = img[exclude:-exclude,exclude:-exclude,:]
+#             # right
+#         elif (r0 > 0) & (r1 < sr) & (c0 > 0) & (c1 > sc):
+#             res[r:r+size-2*exclude,c:c+size-2*exclude,:] = img[exclude:-exclude,exclude:-(c1-sc),:]
+#             # top left
+#         elif (r0 < 0) & (r1 < sr) & (c0 < 0) & (c1 < sc):
+#             res[r:r+size-2*exclude,c:c+size-2*exclude,:] = img[exclude:-exclude,exclude:-exclude,:]
+#             # top right
+#         elif (r0 < 0) & (r1 < sr) & (c0 > 0) & (c1 > sc):
+#             res[r:r+size-2*exclude,c:sc,:] = img[exclude:-exclude,exclude:-(c1-sc),:]
+#             # bottom left
+#         elif (r0 > 0) & (r1 > sr) & (c0 < 0) & (c1 < sc):      
+#             res[r:,c:c+size-2*exclude,:] = img[exclude:-(r1-sr),exclude:-exclude,:]
+#             # bottom right
+#         elif (r0 > 0) & (r1 > sr) & (c0 > 0) & (c1 > sc):
+#             res[r:sr,c:sc,:] = img[exclude:-(r1-sr),exclude:-(c1-sc),:]
+#             # smaller image
+#         elif (r0 < 0) & (r1 > sr) & (c0 < 0) & (c1 > sc):
+#             res = img[r0:-(r1-sr),c0:-(c1-sc),:]

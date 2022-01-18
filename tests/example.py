@@ -1,30 +1,3 @@
-# MiSiC
-### Microbe segmentation in dense colonies.
-
-## Installation
-Requires version python version 3.6/7
-
-`pip install misic`
-
-## MiSiC as napari plugin
-A napari plugin is up and running at the moment with a few glitches!
-
-Here are the steps for installation:
-1.	You can download napari at the bottom of the page at https://github.com/napari/napari/releases
-2.	After you install napari, in the plugins tab > Install plugin > misic-napari
-3.	Restart napari
-4.	Drag and drop an image
-5.	Go to segment
-More information is at https://pypi.org/project/misic-napari/
- 
-The plugin is still underdevelopment so there might be a few bugs that will be incrementally updated.
-
-
-
-## Usage
-
-### use package
-```python
 from misic.misic import *
 from misic.extras import *
 from skimage.io import imsave,imread
@@ -80,6 +53,3 @@ yp = postprocessing(im if light_background else -im,yp)[:,:,0]
 
 # save 8-bit segmented image and use it as you like
 imsave('segmented.tif', ((yp > 0)*255).astype(np.uint8))
-''''
-
-### In case of gpu error, one might need to disabple gpu before importing MiSiC [ os.environ["CUDA_VISIBLE_DEVICES"]="-1" ]
