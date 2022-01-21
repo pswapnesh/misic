@@ -3,8 +3,8 @@ from tensorflow.keras.utils import get_file
 import os
 import numpy as np
 from skimage.feature import shape_index
-from misic_ui.misic.utils import *
-from misic_ui.misic.extras import *
+from misic.misic.utils import *
+from misic.misic.extras import *
 import tensorflow as tf
 
 
