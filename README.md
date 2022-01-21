@@ -20,6 +20,12 @@ More information is at https://pypi.org/project/misic-napari/
 The plugin is still underdevelopment so there might be a few bugs that will be incrementally updated.
 
 
+## Possible errors during installtion
+tensorflow dependecies may not be installed
+if pyparsing error
+pip install pyparsing
+if protobuf error
+conda install protobuf  
 
 ## Usage
 

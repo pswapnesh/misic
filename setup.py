@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="misic", # Replace with your own username
-    version="1.1.4",
+    version="1.1.5",
     author="S.Panigrahi, IMM ",
     author_email="spanigrahi@imm.cnrs.fr",
     description="Microbe segmentation in dense colonies",
@@ -18,7 +18,7 @@ setuptools.setup(
     install_requires=[
    'h5py',
    'scikit-image',
-   'tensorflow',
+   'tensorflow==2.4.1',
    'tqdm'
     ],
     entry_points = {
